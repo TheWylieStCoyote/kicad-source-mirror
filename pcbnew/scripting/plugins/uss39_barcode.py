@@ -38,16 +38,19 @@ ptd = {
     '$': '010101000', '/': '010100010', '+': '010001010', '%': '000101010'}
 
 class Uss39:
-     def __init__(self, text):
+    def __init__(self, text):
         self.Text = self.makePrintable(text)
 
-     __str__ = lambda self: self.Text
-     makePrintable = lambda self, text: ''.join((c for c in text.upper() if ptd.has_key(c)))
+    __str__ = lambda self: self.Text
+    makePrintable = lambda self, text: ''.join((c for c in text.upper()
+                                               if ptd.has_key(c)))
 
-     def getBarCodePattern(self, text = None):
+    def getBarCodePattern(self, text=None):
         text = text if not(text is None) else self.Text
         # Reformated text with start and end characters
-        return reduce(lambda a1, a2: a1 + [0] + a2, [map(int, ptd[c]) for c in ("*%s*" % self.makePrintable(text))])
+        return reduce(lambda a1, a2: a1 + [0] + a2,
+                                    [map(int, ptd[c]) for c in
+                                     ("*%s*" % self.makePrintable(text))])
 
 class Uss39Wizard(HelpfulFootprintWizardPlugin.HelpfulFootprintWizardPlugin):
     GetName = lambda self: 'BARCODE USS-39'
@@ -74,32 +77,32 @@ class Uss39Wizard(HelpfulFootprintWizardPlugin.HelpfulFootprintWizardPlugin):
         # Create barcode object
         self.Barcode = Uss39('=' + str(self.parameters['Barcode']['*Contents']))
         self.X = int(self.parameters['Barcode']['Pixel Width'])
-        self.module.Value().SetText( str(self.Barcode) )
+        self.module.Value().SetText(str(self.Barcode))
         self.C = len(str(self.Barcode))
         # Inter-character gap
         if self.X < 0.250:
             self.I = B.FromMM(3.15)
         else:
-            self.I = (2 * self.X) if (2*self.X) > B.FromMM(1.35) else B.FromMM(1.35)
+            self.I = (2*self.X) if 2*self.X > B.FromMM(1.35) else B.FromMM(1.35)
         # Wide to narrow ratio
         if self.X >= B.FromMM(0.508):
             self.N = B.FromMM(int((2.0+3.0)/2))
         else:
             self.N = B.FromMM(int((2.2+3.0)/2))
         self.H = self.parameters['Barcode']['Height']
-        self.Q = (10 * self.X) if (10 * self.X) >  B.FromMM(6.35) else B.FromMM(6.35)
-        self.L = self.I * (1 + self.C) + (self.C + 2) * (6 * self.X + 3 * self.N * self.X) + 2 * self.Q
+        self.Q = (10*self.X) if 10*self.X > B.FromMM(6.35) else B.FromMM(6.35)
+        self.L = self.I*(1+self.C)+(self.C+2)*(6*self.X+3*self.N*self.X)+2*self.Q
 
 
     def __drawBar__(self, bit, x):
-        offset = (bit + 1) * self.X
+        offset = (bit+1) * self.X
         return x + offset
 
     def __drawSpace__(self, bit, x):
         self.draw.SetLayer(B.F_SilkS)
         self.draw.SetLineTickness(self.X)
         self.draw.Line(x, 0, x, self.H)
-        if (bit == 1):
+        if bit == 1:
             self.draw.Line(x + self.X, 0, x + self.X, self.H)
             self.draw.Line(x + self.X/2, 0, x + self.X/2, self.H)
             self.draw.Line(x, 0, x + self.X, 0)
@@ -127,10 +130,12 @@ class Uss39Wizard(HelpfulFootprintWizardPlugin.HelpfulFootprintWizardPlugin):
         for offset in range(0, int(self.Q), int(self.X/2)):
             xoffset = offset + self.X
             yoffset = offset + self.X/2
-            self.draw.Line(x0 - xoffset, -yoffset, width + xoffset, -yoffset)
-            self.draw.Line(x0 - xoffset, self.H+yoffset, width + xoffset, self.H+yoffset)
+            self.draw.Line(x0-xoffset, -yoffset, width+xoffset, -yoffset)
+            self.draw.Line(x0-xoffset, self.H+yoffset, width+xoffset,
+                           self.H+yoffset)
             self.draw.Line(x0 - xoffset, -yoffset, x0-xoffset, self.H+yoffset)
-            self.draw.Line(width + xoffset, -yoffset, width+xoffset, self.H+yoffset)
+            self.draw.Line(width+xoffset, -yoffset, width+xoffset,
+                           self.H+yoffset)
 
     def BuildThisFootprint(self):
         # Draw bars

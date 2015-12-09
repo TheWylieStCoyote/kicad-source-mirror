@@ -55,7 +55,7 @@ class TouchSliderWizard(HFPW.HelpfulFootprintWizardPlugin):
         self.AddParam("Pads", "clearance", self.uMM, 1)
 
     # build a rectangular pad
-    def smdRectPad(self,module,size,pos,name):
+    def smdRectPad(self, module, size, pos, name):
         pad = D_PAD(module)
         pad.SetSize(size)
         pad.SetShape(PAD_SHAPE_RECT)
@@ -67,16 +67,16 @@ class TouchSliderWizard(HFPW.HelpfulFootprintWizardPlugin):
         return pad
 
 
-    def smdTrianglePad(self,module,size,pos,name,up_down=1,left_right=0):
+    def smdTrianglePad(self, module, size, pos, name, up_down=1, left_right=0):
         pad = D_PAD(module)
-        pad.SetSize(wxSize(size[0],size[1]))
+        pad.SetSize(wxSize(size[0], size[1]))
         pad.SetShape(PAD_SHAPE_TRAPEZOID)
         pad.SetAttribute(PAD_ATTRIB_SMD)
         pad.SetLayerSet(pad.ConnSMDMask())
         pad.SetPos0(pos)
         pad.SetPosition(pos)
         pad.SetPadName(name)
-        pad.SetDelta(wxSize(left_right*size[1],up_down*size[0]))
+        pad.SetDelta(wxSize(left_right*size[1], up_down*size[0]))
         return pad
 
 
@@ -87,9 +87,9 @@ class TouchSliderWizard(HFPW.HelpfulFootprintWizardPlugin):
         bands = prms["*bands"]
 
         if steps < 1:
-            self.parameter_errors["Pads"]["*steps"]="steps must be positive"
+            self.parameter_errors["Pads"]["*steps"] = "steps must be positive"
         if bands < 1:
-            self.parameter_errors["Pads"]["*bands"]="bands must be positive"
+            self.parameter_errors["Pads"]["*bands"] = "bands must be positive"
 
         touch_width       = prms["width"]
         touch_length      = prms["length"]
@@ -98,81 +98,77 @@ class TouchSliderWizard(HFPW.HelpfulFootprintWizardPlugin):
     # The start pad is made of a rectangular pad plus a couple of
     # triangular pads facing tips on the middle/right of the first
     # rectangular pad
-    def AddStartPad(self,position,touch_width,step_length,clearance,name):
+    def AddStartPad(self, position, touch_width, step_length, clearance, name):
         module = self.module
         step_length = step_length - clearance
-        size_pad = wxSize(step_length/2.0+(step_length/3),touch_width)
-        pad = self.smdRectPad(module,size_pad,position-wxPoint(step_length/6,0),name)
+        size_pad = wxSize(step_length/2.0+(step_length/3), touch_width)
+        pad = self.smdRectPad(module, size_pad,
+                              position-wxPoint(step_length/6, 0), name)
         module.Add(pad)
 
-        size_pad = wxSize(step_length/2.0,touch_width)
+        size_pad = wxSize(step_length/2.0, touch_width)
 
-        tp = self.smdTrianglePad(module,wxSize(size_pad[0],size_pad[1]/2),
-                                 position+wxPoint(size_pad[0]/2,size_pad[1]/4),
-                                name)
+        tp = self.smdTrianglePad(module, wxSize(size_pad[0], size_pad[1]/2),
+                                 position+wxPoint(size_pad[0]/2, size_pad[1]/4),
+                                 name)
         module.Add(tp)
-        tp = self.smdTrianglePad(module,wxSize(size_pad[0],size_pad[1]/2),
-                                 position+wxPoint(size_pad[0]/2,-size_pad[1]/4),
-                                name
-                                ,-1)
+        tp = self.smdTrianglePad(module, wxSize(size_pad[0], size_pad[1]/2),
+                                 position+wxPoint(size_pad[0]/2,
+                                 -size_pad[1]/4), name, -1)
         module.Add(tp)
 
     # compound a "start pad" shape plus a triangle on the left, pointing to
     # the previous touch-pad
-    def AddMiddlePad(self,position,touch_width,step_length,clearance,name):
+    def AddMiddlePad(self, position, touch_width, step_length, clearance, name):
         module = self.module
         step_length = step_length - clearance
-        size_pad = wxSize(step_length/2.0,touch_width)
+        size_pad = wxSize(step_length/2.0, touch_width)
 
-        size_pad = wxSize(step_length/2.0,touch_width)
-        pad = self.smdRectPad(module,size_pad,position,name)
+        size_pad = wxSize(step_length/2.0, touch_width)
+        pad = self.smdRectPad(module, size_pad, position, name)
         module.Add(pad)
 
-        tp = self.smdTrianglePad(module,wxSize(size_pad[0],size_pad[1]/2),
-                                 position+wxPoint(size_pad[0]/2,size_pad[1]/4),
-                                name)
+        tp = self.smdTrianglePad(module, wxSize(size_pad[0], size_pad[1]/2),
+                                 position+wxPoint(size_pad[0]/2, size_pad[1]/4),
+                                 name)
         module.Add(tp)
-        tp = self.smdTrianglePad(module,wxSize(size_pad[0],size_pad[1]/2),
-                                 position+wxPoint(size_pad[0]/2,-size_pad[1]/4),
-                                name
-                                ,-1)
+        tp = self.smdTrianglePad(module, wxSize(size_pad[0], size_pad[1]/2),
+                                 position+wxPoint(size_pad[0]/2,
+                                 -size_pad[1]/4), name, -1)
         module.Add(tp)
 
-        tp = self.smdTrianglePad(module,wxSize(size_pad[0],size_pad[1]/2),
-                                        position+wxPoint(-size_pad[0],0),
-                                        name,
-                                        0,
-                                        -1)
+        tp = self.smdTrianglePad(module, wxSize(size_pad[0], size_pad[1]/2),
+                                        position+wxPoint(-size_pad[0], 0),
+                                        name, 0, -1)
         module.Add(tp)
 
 
-    def AddFinalPad(self,position,touch_width,step_length,clearance,name):
+    def AddFinalPad(self, position, touch_width, step_length, clearance, name):
         module = self.module
         step_length = step_length - clearance
-        size_pad = wxSize(step_length/2.0,touch_width)
+        size_pad = wxSize(step_length/2.0, touch_width)
 
-        pad = self.smdRectPad(module,
-                              wxSize(size_pad[0]+(step_length/3),size_pad[1]),
-                              position+wxPoint(step_length/6,0),
+        pad = self.smdRectPad(module, wxSize(size_pad[0]+(step_length/3),
+                              size_pad[1]), position+wxPoint(step_length/6, 0),
                               name)
         module.Add(pad)
 
-        tp = self.smdTrianglePad(module,wxSize(size_pad[0],size_pad[1]/2),
-                                        position+wxPoint(-size_pad[0],0),
-                                        name,
-                                        0,
-                                        -1)
+        tp = self.smdTrianglePad(module, wxSize(size_pad[0], size_pad[1]/2),
+                                 position+wxPoint(-size_pad[0], 0), name,
+                                 0, -1)
         module.Add(tp)
 
-    def AddStrip(self,pos,steps,touch_width,step_length,touch_clearance):
-        self.AddStartPad(pos,touch_width,step_length,touch_clearance,"1")
+    def AddStrip(self, pos, steps, touch_width, step_length, touch_clearance):
+        self.AddStartPad(pos, touch_width, step_length, touch_clearance, "1")
 
-        for n in range(2,steps):
-            pos = pos + wxPoint(step_length,0)
-            self.AddMiddlePad(pos,touch_width,step_length,touch_clearance,str(n))
+        for n in xrange(2, steps):
+            pos = pos + wxPoint(step_length, 0)
+            self.AddMiddlePad(pos, touch_width, step_length, touch_clearance,
+                              str(n))
 
-        pos = pos + wxPoint(step_length,0)
-        self.AddFinalPad(pos,touch_width,step_length,touch_clearance,str(steps))
+        pos = pos + wxPoint(step_length, 0)
+        self.AddFinalPad(pos, touch_width, step_length, touch_clearance,
+                         str(steps))
 
     # build the footprint from parameters
     # FIX ME: the X and Y position of the footprint can be better.
@@ -194,12 +190,12 @@ class TouchSliderWizard(HFPW.HelpfulFootprintWizardPlugin):
         self.draw.Reference(0, -ypos, t_size)
 
         # starting pad
-        pos = wxPointMM(0,0)
+        pos = wxPointMM(0, 0)
         band_width = touch_width/bands
 
         for b in range(bands):
-            self.AddStrip(pos,steps,band_width,step_length,touch_clearance)
-            pos += wxPoint(0,band_width)
+            self.AddStrip(pos, steps, band_width, step_length, touch_clearance)
+            pos += wxPoint(0, band_width)
 
 TouchSliderWizard().register()
 

@@ -32,7 +32,8 @@ class PadMaker:
     def __init__(self, module):
         self.module = module
 
-    def THPad(self, Vsize, Hsize, drill, shape=pcbnew.PAD_SHAPE_OVAL, rot_degree = 0):
+    def THPad(self, Vsize, Hsize, drill, shape=pcbnew.PAD_SHAPE_OVAL,
+              rot_degree=0):
         pad = pcbnew.D_PAD(self.module)
         pad.SetSize(pcbnew.wxSize(Hsize, Vsize))
         pad.SetShape(shape)
@@ -94,7 +95,7 @@ class PadArray:
         self.pad.GetParent().Add(pad)
 
     def GetPad(self, is_first_pad, pos):
-        if (self.firstPad and is_first_pad):
+        if self.firstPad and is_first_pad:
             pad = self.firstPad
         else:
             pad = self.pad
@@ -117,7 +118,7 @@ class PadArray:
         """
         Implement this as needed for each array type
         """
-        raise NotImplementedError;
+        raise NotImplementedError
 
 
 class PadGridArray(PadArray):
@@ -165,7 +166,7 @@ class PadGridArray(PadArray):
                 posY = pin1posY + (self.py * y)
                 pos = dc.TransformPoint(posX, posY)
                 pad = self.GetPad(x == 0 and y == 0, pos)
-                pad.SetPadName(self.GetName(x,y))
+                pad.SetPadName(self.GetName(x, y))
                 self.AddPad(pad)
 
 

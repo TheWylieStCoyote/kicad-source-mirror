@@ -47,22 +47,22 @@ class RowedFootprint(HFPW.HelpfulFootprintWizardPlugin):
         self.AddParam("Body", self.courtyard_y_margin_key, self.uMM, 1)
 
     def CheckParameters(self):
-        self.CheckParamInt("Pads", '*' + self.pad_count_key)
-        self.CheckParamInt("Pads", '*' + self.line_count_key)
+        self.CheckParamInt("Pads", '*'+self.pad_count_key)
+        self.CheckParamInt("Pads", '*'+self.line_count_key)
 
         # can do this internally to parameter manager?
-        self.CheckParamBool("Body", '*' + self.silkscreen_inside_key)
+        self.CheckParamBool("Body", '*'+self.silkscreen_inside_key)
 
     def BuildThisFootprint(self):
         pads = self.parameters["Pads"]
         body = self.parameters["Body"]
 
-        pad_count = pads['*' + self.pad_count_key]
+        pad_count = pads['*'+self.pad_count_key]
         pad_Vsize = pads[self.pad_vertical_size_key]
         pad_Hsize = pads[self.pad_horizontal_size_key]
         line_pitch = pads[self.line_spacing_key]
         pad_pitch = pads[self.pad_pitch_key]
-        line_count = pads['*' + self.line_count_key]
+        line_count = pads['*'+self.line_count_key]
 
         if line_count == 1:
             singleline = True
@@ -72,17 +72,18 @@ class RowedFootprint(HFPW.HelpfulFootprintWizardPlugin):
         # add in the pads
         pad = self.GetPad()
 
-        array = PA.PadZGridArray(pad, pad_count, line_count, line_pitch, pad_pitch)
+        array = PA.PadZGridArray(pad, pad_count, line_count, line_pitch,
+                                 pad_pitch)
         array.AddPadsToModule(self.draw)
 
         # draw the Silk Screen
         pads_per_line = pad_count // line_count
-        row_length = pad_pitch * (pads_per_line - 1)  # fenceposts
+        row_length = pad_pitch * (pads_per_line-1)  # fenceposts
         ssx_offset = pad_Hsize / 2 + body[self.outline_x_margin_key]
         ssy_offset = pad_Vsize / 2 + body[self.outline_y_margin_key]
 
-        pin1posX = pad_pitch * (pad_count - 1) / 2
-        pin1posY = line_pitch * (line_count - 1) / 2
+        pin1posX = pad_pitch * (pad_count-1) / 2
+        pin1posY = line_pitch * (line_count-1) / 2
         leftx = pin1posX + ssx_offset
         lowy = pin1posY + ssy_offset
 
@@ -102,8 +103,8 @@ class RowedFootprint(HFPW.HelpfulFootprintWizardPlugin):
         cmarginx = body[self.courtyard_x_margin_key]
         cmarginy = body[self.courtyard_y_margin_key]
         self.draw.SetLayer(pcbnew.F_CrtYd)
-        sizex = (pin1posX + cmarginx) * 2 + pad_Hsize
-        sizey = (pin1posY + cmarginy) * 2 + pad_Vsize
+        sizex = (pin1posX+cmarginx) * 2 + pad_Hsize
+        sizey = (pin1posY+cmarginy) * 2 + pad_Vsize
         self.draw.Box(0, 0, sizex, sizey)
 
         #reference and value
@@ -124,7 +125,8 @@ class RowedFootprint(HFPW.HelpfulFootprintWizardPlugin):
         if setback > sizey/2:
             setback = sizey/2
 
-        self.draw.BoxWithDiagonalAtCorner(0, 0, sizex, sizey, setback, self.draw.flipY)
+        self.draw.BoxWithDiagonalAtCorner(0, 0, sizex, sizey, setback,
+                                          self.draw.flipY)
 
 
 class ZIPWizard(RowedFootprint):
@@ -147,8 +149,8 @@ class ZIPWizard(RowedFootprint):
         self.AddParam("Body", self.outline_y_margin_key, self.uMM, 0.5)
 
     def GetValue(self):
-        rows = self.parameters["Pads"]['*' + self.line_count_key]
-        pad_cnt = self.parameters["Pads"]['*' + self.pad_count_key]
+        rows = self.parameters["Pads"]['*'+self.line_count_key]
+        pad_cnt = self.parameters["Pads"]['*'+self.pad_count_key]
 
         if rows == 1:
             name = "SIP"
@@ -178,7 +180,8 @@ class ZOICWizard(RowedFootprint):
         return "ZOIC, etc, Footprint Wizard"
 
     def GetValue(self):
-        return "%s-%d" % ("ZOIC", self.parameters["Pads"]['*' + self.pad_count_key])
+        return "%s-%d" % ("ZOIC",
+                          self.parameters["Pads"]['*'+self.pad_count_key])
 
     def GenerateParameterList(self):
         RowedFootprint.GenerateParameterList(self)
@@ -188,7 +191,6 @@ class ZOICWizard(RowedFootprint):
         self.AddParam("Pads", self.pad_horizontal_size_key, self.uMM, 0.6)
         self.AddParam("Pads", self.pad_vertical_size_key, self.uMM, 1.8)
         self.AddParam("Pads", self.line_spacing_key, self.uMM, 5.2)
-
         self.AddParam("Body", self.outline_x_margin_key, self.uMM, 0.5)
         self.AddParam("Body", self.outline_y_margin_key, self.uMM, 1)
 

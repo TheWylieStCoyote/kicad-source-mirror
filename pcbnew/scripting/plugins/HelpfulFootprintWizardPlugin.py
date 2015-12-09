@@ -288,7 +288,7 @@ class HelpfulFootprintWizardPlugin(pcbnew.FootprintWizardPlugin,
         """
         raise NotImplementedError
 
-    def BuildFootprint( self ):
+    def BuildFootprint(self):
         """
         Actually make the footprint. We defer all but the setup to
         the implementing class
@@ -300,12 +300,14 @@ class HelpfulFootprintWizardPlugin(pcbnew.FootprintWizardPlugin,
         # do it first, so if we return early, we don't segfault KiCad
 
         if not self.ProcessParameters():
-            self.buildmessages = "Cannot build footprint: Parameters have errors:\n"
+            self.buildmessages = \
+                            "Cannot build footprint: Parameters have errors:\n"
             self.buildmessages += self._PrintParameterErrors()
             return
 
-        self.buildmessages = ("Building new %s footprint with the following parameters:\n"
-                   % self.name)
+        self.buildmessages = \
+                    ("Building new %s footprint with the following parameters:\n"
+                     % self.name)
 
         self.buildmessages += self._PrintParameterTable()
 

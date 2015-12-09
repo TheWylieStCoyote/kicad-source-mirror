@@ -368,7 +368,7 @@ class FootprintWizardDrawingAids:
             _PolyLineInternal(pts)
             self.PopTransform()
 
-    def Reference(self, x, y, size, orientation_degree = 0):
+    def Reference(self, x, y, size, orientation_degree=0):
         """
         Draw the module's reference as the given point.
 
@@ -384,7 +384,7 @@ class FootprintWizardDrawingAids:
         self.module.Reference().SetSize(text_size)
         self.module.Reference().SetOrientation(orientation_degree*10)   # internal angles are in 0.1 deg
 
-    def Value(self, x, y, size, orientation_degree = 0):
+    def Value(self, x, y, size, orientation_degree=0):
         """
         As for references, draw the module's value
         """

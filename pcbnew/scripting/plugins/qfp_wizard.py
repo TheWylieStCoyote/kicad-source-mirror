@@ -65,39 +65,40 @@ class QFPWizard(HelpfulFootprintWizardPlugin.HelpfulFootprintWizardPlugin):
 
         pad_shape = pcbnew.PAD_SHAPE_OVAL if pads["*oval"] else pcbnew.PAD_SHAPE_RECT
 
-        h_pad = PA.PadMaker(self.module).SMDPad( pad_length, pad_width,
-                                                 shape=pad_shape, rot_degree=90.0)
-        v_pad = PA.PadMaker(self.module).SMDPad( pad_length, pad_width, shape=pad_shape)
+        h_pad = PA.PadMaker(self.module).SMDPad(pad_length, pad_width,
+                                                shape=pad_shape, rot_degree=90.0)
+        v_pad = PA.PadMaker(self.module).SMDPad(pad_length, pad_width,
+                                                shape=pad_shape)
 
         #left row
-        pin1Pos = pcbnew.wxPoint(-h_pitch / 2, 0)
+        pin1Pos = pcbnew.wxPoint(-h_pitch/2, 0)
         array = PA.PadLineArray(h_pad, pads_per_row, pad_pitch, True, pin1Pos)
         array.SetFirstPadInArray(1)
         array.AddPadsToModule(self.draw)
 
         #bottom row
-        pin1Pos = pcbnew.wxPoint(0, v_pitch / 2)
+        pin1Pos = pcbnew.wxPoint(0, v_pitch/2)
         array = PA.PadLineArray(v_pad, pads_per_row, pad_pitch, False, pin1Pos)
-        array.SetFirstPadInArray(pads_per_row + 1)
+        array.SetFirstPadInArray(pads_per_row+1)
         array.AddPadsToModule(self.draw)
 
         #right row
-        pin1Pos = pcbnew.wxPoint(h_pitch / 2, 0)
+        pin1Pos = pcbnew.wxPoint(h_pitch/2, 0)
         array = PA.PadLineArray(h_pad, pads_per_row, -pad_pitch, True,
                                 pin1Pos)
-        array.SetFirstPadInArray(2*pads_per_row + 1)
+        array.SetFirstPadInArray(2*pads_per_row+1)
         array.AddPadsToModule(self.draw)
 
         #top row
-        pin1Pos = pcbnew.wxPoint(0, -v_pitch / 2)
+        pin1Pos = pcbnew.wxPoint(0, -v_pitch/2)
         array = PA.PadLineArray(v_pad, pads_per_row, -pad_pitch, False,
                                 pin1Pos)
-        array.SetFirstPadInArray(3*pads_per_row + 1)
+        array.SetFirstPadInArray(3*pads_per_row+1)
         array.AddPadsToModule(self.draw)
 
-        lim_x = self.parameters["Package"]["package width"] / 2
-        lim_y = self.parameters["Package"]["package height"] / 2
-        inner = (row_len / 2) + pad_pitch
+        lim_x = self.parameters["Package"]["package width"]/2
+        lim_y = self.parameters["Package"]["package height"]/2
+        inner = (row_len/2) + pad_pitch
 
         #top left - diagonal
         self.draw.Line(-lim_x, -inner, -inner, -lim_y)

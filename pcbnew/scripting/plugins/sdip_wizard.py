@@ -58,9 +58,9 @@ class RowedFootprint(HFPW.HelpfulFootprintWizardPlugin):
         self.AddParam("Body", self.outline_y_margin_key, self.uMM, 0.5)
 
     def CheckParameters(self):
-        self.CheckParamInt("Pads", '*' + self.row_count_key, min_value=1, max_value=2)
-        self.CheckParamInt(
-            "Pads", '*' + self.pad_count_key,
+        self.CheckParamInt("Pads", '*'+self.row_count_key, min_value=1,
+                           max_value=2)
+        self.CheckParamInt("Pads", '*'+self.pad_count_key,
             is_multiple_of=self.parameters["Pads"]['*' + self.row_count_key])
 
         # can do this internally to parameter manager?
@@ -69,12 +69,12 @@ class RowedFootprint(HFPW.HelpfulFootprintWizardPlugin):
     def BuildThisFootprint(self):
         pads = self.parameters["Pads"]
         body = self.parameters["Body"]
-        num_pads = pads['*' + self.pad_count_key]
+        num_pads = pads['*'+self.pad_count_key]
         pad_length = pads[self.pad_length_key]
         pad_width = pads[self.pad_width_key]
         row_pitch = pads[self.row_spacing_key]
         pad_pitch = pads[self.pad_pitch_key]
-        num_rows = pads['*' + self.row_count_key]
+        num_rows = pads['*'+self.row_count_key]
 
         pads_per_row = num_pads // num_rows
 
@@ -85,8 +85,8 @@ class RowedFootprint(HFPW.HelpfulFootprintWizardPlugin):
         array.AddPadsToModule(self.draw)
 
         # draw the Silk Screen
-        Hsize = pad_pitch * (num_pads / num_rows - 1)
-        Vsize = row_pitch * (num_rows - 1)
+        Hsize = pad_pitch * (num_pads/num_rows-1)
+        Vsize = row_pitch * (num_rows-1)
         pin1_posY = -Vsize / 2
         pin1_posX = -Hsize / 2
 
@@ -137,8 +137,8 @@ class SDIPWizard(RowedFootprint):
 
     def GetValue(self):
         pads = self.parameters["Pads"]
-        rows = pads['*' + self.row_count_key]
-        pad_count = pads['*' + self.pad_count_key]
+        rows = pads['*'+self.row_count_key]
+        pad_count = pads['*'+self.pad_count_key]
         row_dist_mil = pcbnew.Iu2Mils(int(self.parameters["Pads"][self.row_spacing_key])) #int(self.parameters["Pads"][self.row_spacing_key] / 2.54 * 100)
         pad_shape = ""
 
@@ -189,8 +189,8 @@ class SDIPWizard(RowedFootprint):
 
             #line between pin1 and pin2
             pad_pitch = self.parameters["Pads"][self.pad_pitch_key]
-            pad_cnt = self.parameters["Pads"]['*' + self.pad_count_key]
-            line_x = ( pad_cnt/2 - 1) * pad_pitch
+            pad_cnt = self.parameters["Pads"]['*'+self.pad_count_key]
+            line_x = (pad_cnt/2-1)*pad_pitch
             self.draw.VLine(-line_x, -ssy, ssy * 2)
 
         return ssx, ssy
@@ -207,8 +207,8 @@ class SOICWizard(RowedFootprint):
         return "SOIC, MSOP, SSOP, TSSOP, etc, footprint wizard"
 
     def GetValue(self):
-        pad_count = self.parameters["Pads"]['*' + self.pad_count_key]
-        return "%s-%d" % ("SOIC", pad_count)
+        pad_count = self.parameters["Pads"]['*'+self.pad_count_key]
+        return "%s-%d"%("SOIC", pad_count)
 
     def GenerateParameterList(self):
         RowedFootprint.GenerateParameterList(self)
@@ -237,6 +237,7 @@ class SOICWizard(RowedFootprint):
         if setback > ssy:
             setback = ssy
 
-        self.draw.BoxWithDiagonalAtCorner(0, 0, ssx*2, ssy*2, setback, self.draw.flipY)
+        self.draw.BoxWithDiagonalAtCorner(0, 0, ssx*2, ssy*2, setback,
+                                          self.draw.flipY)
 
 SOICWizard().register()

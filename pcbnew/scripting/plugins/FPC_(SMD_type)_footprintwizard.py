@@ -153,6 +153,5 @@ class FPC_FootprintWizard(HFPW.HelpfulFootprintWizardPlugin):
         # right pad side
         self.draw.Line(-xstart, posy, -xend, yend)
 
-if __name__ == '__main__':
-    FPC_FootprintWizard().register()
+FPC_FootprintWizard().register()
 

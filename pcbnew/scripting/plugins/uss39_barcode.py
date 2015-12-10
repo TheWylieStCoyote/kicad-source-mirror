@@ -151,6 +151,5 @@ class Uss39Wizard(HelpfulFootprintWizardPlugin.HelpfulFootprintWizardPlugin):
         self.draw.Circle(0, 0, B.FromMM(0.25))
         self.module.Value().SetLayer(B.F_Fab)
 
-if __name__ == '__main__':
-    Uss39Wizard().register()
+Uss39Wizard().register()
 

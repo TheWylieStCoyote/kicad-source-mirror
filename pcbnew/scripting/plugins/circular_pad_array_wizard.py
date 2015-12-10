@@ -81,6 +81,5 @@ class circular_pad_array_wizard(HFPW.HelpfulFootprintWizardPlugin):
         self.draw.Reference(0, -textposy, text_size)
 
 
-if __name__ == '__main__':
-    circular_pad_array_wizard().register()
+circular_pad_array_wizard().register()
 

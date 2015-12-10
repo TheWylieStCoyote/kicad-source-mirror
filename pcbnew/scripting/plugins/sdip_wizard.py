@@ -239,6 +239,5 @@ class SOICWizard(RowedFootprint):
 
         self.draw.BoxWithDiagonalAtCorner(0, 0, ssx*2, ssy*2, setback,
                                           self.draw.flipY)
-if __name__ == '__main__':
-    SOICWizard().register()
+SOICWizard().register()
 

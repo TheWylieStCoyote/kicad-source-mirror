@@ -123,6 +123,5 @@ class QFPWizard(HelpfulFootprintWizardPlugin.HelpfulFootprintWizardPlugin):
         self.draw.Value(0, text_offset, text_size)
         self.draw.Reference(0, -text_offset, text_size)
 
-if __name__ == '__main__':
-    QFPWizard().register()
+QFPWizard().register()
 

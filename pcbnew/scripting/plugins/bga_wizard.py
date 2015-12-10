@@ -94,6 +94,5 @@ class BGAWizard(HFPW.HelpfulFootprintWizardPlugin):
         self.draw.Value(0, ypos, text_size)
         self.draw.Reference(0, -ypos, text_size)
 
-if __name__ == '__main__':
-    BGAWizard().register()
+BGAWizard().register()
 

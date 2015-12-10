@@ -200,4 +200,6 @@ class ZOICWizard(RowedFootprint):
         return PA.PadMaker(self.module).SMDPad(
             pad_Vsize, pad_Hsize, shape=pcbnew.PAD_SHAPE_RECT)
 
-ZOICWizard().register()
+if __name__ == '__main__':
+    ZOICWizard().register()
+

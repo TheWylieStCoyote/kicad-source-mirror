@@ -197,5 +197,6 @@ class TouchSliderWizard(HFPW.HelpfulFootprintWizardPlugin):
             self.AddStrip(pos, steps, band_width, step_length, touch_clearance)
             pos += wxPoint(0, band_width)
 
-TouchSliderWizard().register()
+if __name__ == '__main__':
+    TouchSliderWizard().register()
 
